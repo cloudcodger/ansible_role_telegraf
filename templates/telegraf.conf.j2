@@ -1,0 +1,17 @@
+[global_tags]
+{{ telegraf_config_global_tags | indent(2, first=true) }}
+[agent]
+{{ telegraf_config_agent | indent(2, first=true) }}
+{% for item in telegraf_config_outputs %}
+[[outputs.{{ item }}]]
+{%   if vars['telegraf_config_output_settings_' + item] is defined %}
+{{ lookup('ansible.builtin.vars', 'telegraf_config_output_settings_' + item) | indent(2, first=true) }}
+{%-  endif %}
+{% endfor %}
+{% for item in telegraf_config_inputs %}
+
+[[inputs.{{ item }}]]
+{%   if vars['telegraf_config_input_settings_' + item] is defined %}
+{{ lookup('ansible.builtin.vars', 'telegraf_config_input_settings_' + item) | indent(2, first=true) }}
+{%-  endif %}
+{%- endfor %}

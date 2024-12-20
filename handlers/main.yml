@@ -1,0 +1,10 @@
+---
+- name: reload telegraf
+  ansible.builtin.service:
+    name: telegraf
+    state: reloaded
+
+- name: restart telegraf
+  ansible.builtin.service:
+    name: telegraf
+    state: restart

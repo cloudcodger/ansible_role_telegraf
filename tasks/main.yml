@@ -1,0 +1,32 @@
+---
+- name: Copy up 'influxdata-archive.gpg'.
+  ansible.builtin.copy:
+    src: influxdata-archive.gpg
+    dest: "{{ telegraf_keyrings_dir }}/influxdata-archive.gpg"
+    mode: '0644'
+
+- name: Add Influxdata repository.
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ telegraf_keyrings_dir }}/influxdata-archive.gpg] https://repos.influxdata.com/debian stable main"
+    state: present
+
+- name: Install 'telegraf', updating cache if needed.
+  ansible.builtin.apt:
+    name: telegraf
+    cache_valid_time: 3600
+
+- name: Template a file to /etc/telegraf/telegraf.conf
+  ansible.builtin.template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - reload telegraf
+
+- name: Enable the telegraf service and make sure it's started.
+  ansible.builtin.service:
+    state: started
+    name: telegraf
+    enabled: true

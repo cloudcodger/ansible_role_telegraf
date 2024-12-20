@@ -1,0 +1,25 @@
+---
+telegraf_config_global_tags: ""
+
+telegraf_config_agent: |
+  interval = "60s"
+  round_interval = true
+  metric_buffer_limit = 20000
+
+telegraf_config_outputs: [file]
+telegraf_config_output_settings_file: |
+  files = ["stdout", "/tmp/metrics"]
+  data_format = "influx"
+  rotation_interval = "7d"
+
+telegraf_config_inputs: [cpu, disk, kernel, mem, net, processes, system]
+telegraf_config_input_settings_cpu: |
+  percpu = true
+  totalcpu = true
+  collect_cpu_time = false
+  report_active = false
+telegraf_config_input_settings_disk: |
+  ignore_fs = ["tmpfs", "devtmpfs", "devfs", "iso9660", "overlay", "aufs", "squashfs"]
+  mount_points = ["/"]
+
+telegraf_keyrings_dir: /usr/share/keyrings
