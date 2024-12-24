@@ -54,7 +54,7 @@ This example shows the output being changed from the `file` default, to `influxd
         bucket = "My_bucket_name"
         organization = "My Org Name"
         token = "{{ lookup('file', '~/.secrets/influxdb-Founders.token') }}"
-        url = https://influxdb.example.com
+        urls = ["https://influxdb.example.com/"]
       telegraf_config_inputs: [kernel, mem, net, processes, system, cpu, disk, systemd_units]
       telegraf_config_input_settings_systemd_units: |
         timeout = "5s"
